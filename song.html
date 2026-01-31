@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Song Request</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="song.css"> <!-- Link to song.css -->
+</head>
+<body>
+
+<div class="overlay">
+  <div class="card">
+    <div id="formSection">
+      <h1>🎶 Song Request</h1>
+      <p class="sub">Drop your favourite song below!</p>
+
+      <!-- GOOGLE FORM -->
+      <form 
+        id="songForm"
+        action="https://docs.google.com/forms/d/1J8nUvlSYcoNsjYUwESVq2wyIdRgkSK0wrDkViYwSGGQ/formResponse"
+        method="POST"
+        target="hidden_iframe"
+      >
+        <div class="form-group">
+          <label for="song">Name of the Song</label>
+          <input type="text" name="entry.1422008033" placeholder="e.g. Perfect" required />
+        </div>
+
+        <div class="form-group">
+          <label for="artist">Name of the Artist</label>
+          <input type="text" name="entry.1030186970" placeholder="e.g. Ed Sheeran" required />
+        </div>
+
+        <button type="submit" class="btn">Submit Request</button>
+      </form>
+      <!-- GOOGLE FORM END -->
+
+      <div class="disclaimer">
+        <strong>Please note:</strong><br />
+        • Only English songs are accepted.<br />
+        • If we know the song and have a backing track for it, we’ll gladly perform it.<br />
+        • The song may not be played immediately, depending on the BPM and the current set.
+      </div>
+    </div>
+
+    <div id="successSection" class="success">
+      <h2>✅ Request Received!</h2>
+      <p>Thanks for the song suggestion. Enjoy the music! 🎤🎸</p>
+    </div>
+  </div>
+</div>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+<script src="song.js"></script> <!-- Link to song.js -->
+</body>
+</html>
