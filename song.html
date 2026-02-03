@@ -9,14 +9,16 @@
 </head>
 <body>
 
+<!-- MAIN OVERLAY -->
 <div class="overlay">
   <div class="card">
+
+      <!-- FORM SECTION -->
     <div id="formSection">
       <h1 class="name"> The Philbert Brothers</h1> 
       <h1 class="songtitle">🎶 Song Request</h1>
       <p class="sub">Drop your favourite song below!</p>
-
-      <!-- GOOGLE FORM -->
+      
       <form 
         id="songForm"
         action="https://docs.google.com/forms/d/e/1FAIpQLScacOMmfsfkYjt8rhfAhqx6IDyuoZqA8sCheWbY3tMAVdglsA/formResponse"
@@ -28,13 +30,12 @@
           
           <label for="person">Your Name (optional)</label>
           <input 
-  type="text"
-  id="personName"
-  name="entry.868369003"
-  placeholder="e.g. Alex"
-/>
-           
-        </div>
+            type="text"
+            id="personName"
+            name="entry.868369003"
+            placeholder="e.g. Alex"
+/>          
+          </div>
         <div class="form-group">
           <label for="song">Name of the Song</label>
           <input type="text" name="entry.1776646019" placeholder="e.g. Perfect" required />
@@ -49,26 +50,32 @@
       </form>
       <!-- GOOGLE FORM END -->
 
+      <button class="btn" id="openOccasion">
+        🎉 celebrating an occasion?
+      </button>
+
       <div class="disclaimer">
         <strong>Please note:</strong><br />
         • Only English songs are accepted.<br />
         • If we know the song and have a backing track for it, we’ll gladly perform it.<br />
         • The song may not be played immediately, depending on the BPM and the current set.
       </div>
-      <div class="socials">
-  <a href="https://instagram.com/philbertbrothers" target="_blank" class="social-btn insta">
-    📸 Instagram
-  </a>
-  <!-- <a href="https://youtube.com/@YOUR_CHANNEL" target="_blank" class="social-btn yt">
-    ▶️ YouTube
-  </a> -->
-</div>
-    </div>
 
-   
+      <div class="socials">
+        <a href="https://instagram.com/philbertbrothers" target="_blank" class="social-btn insta">
+          📸 Instagram
+        </a>
+        <!-- <a href="https://youtube.com/@YOUR_CHANNEL" target="_blank" class="social-btn yt">
+        ▶️ YouTube
+        </a> -->
+        </div>
+      </div>
+
+  
 
      <!-- SUCCESS -->
     <div id="successSection" class="success"></div>
+
   </div>
 </div>
 
@@ -90,14 +97,61 @@
     turn every show into an unforgettable live experience.
   </p>
 
-  <div class="contact-box">
-    <h3>Contact Us</h3>
-    <p>📞 +91 7305310127</p>
-  </div>
+<div class="contact-box">
+  <h3>Contact Us</h3>
+  <button id="copyPhone" class="btn-copy" data-phone="+917305310127">
+    <span class="icon">📞</span> <span class="text">+91 7305310127</span>
+  </button>
+</div>
   </div>
 </section>
 
+
+<!-- OCCASION MODAL -->
+<div class="overlay hidden" id="occasionOverlay">
+  <div class="card">
+    <h1 class="songtitle">🎤 Shout-out</h1>
+    <p class="sub">Send a special message to a special someone!</p>
+
+    <form
+      id="occasionForm"
+      action="https://docs.google.com/forms/d/e/1FAIpQLScacOMmfsfkYjt8rhfAhqx6IDyuoZqA8sCheWbY3tMAVdglsA/formResponse"
+      method="POST"
+      target="hidden_iframe"
+    >
+      <div class="form-group">
+        <label>Person’s Name</label>
+        <input type="text" name="entry.389682099" placeholder="e.g. Alex">
+      </div>
+
+      <div class="form-group">
+        <label>Your Message</label>
+        <input type="text" name="entry.805932371" placeholder="Only good vibes ❤️">
+      </div>
+
+      <div class="form-group">
+        <label>Occasion</label>
+        <div class="radio-group">
+          <label><input type="radio" name="entry.1223390077" value="Birthday"> 🎂 Birthday</label>
+          <label><input type="radio" name="entry.1223390077" value="Anniversary"> 💍 Anniversary</label>
+          <label><input type="radio" name="entry.1223390077" value="None"> None</label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Send your occasion!!</button>
+      <button type="button" class="back-btn" id="closeOccasion">⬅ Back</button>
+    </form>
+  </div>
+</div>
+
 <iframe name="hidden_iframe" style="display:none;"></iframe>
 <script src="song.js"></script>
+
+<div id="loadingOverlay" class="loading-overlay hidden">
+  <div class="loader-content">
+    <div class="spinner"></div>
+    <p>Sending to the band...</p>
+  </div>
+</div>
 </body>
 </html>
