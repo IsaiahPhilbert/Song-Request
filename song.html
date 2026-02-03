@@ -121,8 +121,23 @@
       target="hidden_iframe"
     >
       <div class="form-group">
+        <label>Your Name (optional)</label>
+        <input type="text" id="occ_your_name" name="entry.868369003" placeholder="e.g. Alex">
+      </div>
+
+      <div class="form-group">
+        <label>Song Name</label>
+        <input type="text" id="occ_song" name="entry.1776646019" placeholder="e.g. Perfect" required>
+      </div>
+
+      <div class="form-group">
+        <label>Artist Name</label>
+        <input type="text" id="occ_artist" name="entry.181281543" placeholder="e.g. Ed Sheeran" required>
+      </div>
+
+      <div class="form-group">
         <label>Person’s Name</label>
-        <input type="text" name="entry.389682099" placeholder="e.g. Alex">
+        <input type="text" id="occ_shoutout_to" name="entry.389682099" placeholder="e.g. Sarah">
       </div>
 
       <div class="form-group">
@@ -135,10 +150,17 @@
         <div class="radio-group">
           <label><input type="radio" name="entry.1223390077" value="Birthday"> 🎂 Birthday</label>
           <label><input type="radio" name="entry.1223390077" value="Anniversary"> 💍 Anniversary</label>
-          <label><input type="radio" name="entry.1223390077" value="None"> None</label>
+          <label><input type="radio" name="entry.1223390077" value="None" checked> None</label>
         </div>
       </div>
 
+
+        <div class="disclaimer">
+        <strong>Please note:</strong><br />
+        • Only English songs are accepted.<br />
+        • If we know the song and have a backing track for it, we’ll gladly perform it.<br />
+        • The song may not be played immediately, depending on the BPM and the current set.
+      </div>
       <button type="submit" class="btn">Send your occasion!!</button>
       <button type="button" class="back-btn" id="closeOccasion">⬅ Back</button>
     </form>

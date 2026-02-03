@@ -14,11 +14,10 @@ body {
 
 .main-logo {
   display: block;
-  margin: 0 auto 10px; /* Centers it and adds a small gap below */
-  width: 100px;        /* You can adjust this size */
+  margin: 0 auto 10px;
+  width: 200px; /* Increased size for impact */
   height: auto;
 }
-
 .overlay {
   position: relative;
   width: 100%;
@@ -54,13 +53,22 @@ body {
 
 /* ================= HEADINGS ================= */
 
-.name {
+  .name {
+  font-size: 1.7rem; 
+  margin-bottom: 5px;
   text-align: center;
   color: #ffb347;
 }
 
-.songtitle {
-  text-align: center;
+  .songtitle {
+  font-size: 1.6rem;    /* Adjusted size */
+  white-space: nowrap;  /* Forces it to stay on one line */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 0;
+ text-align: center;
   color: #ff4ecd;
 }
 
@@ -339,6 +347,11 @@ input {
   margin: 0;
 }
 
+#occasionOverlay .disclaimer {
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
 /* --- LOADING OVERLAY --- */
 .loading-overlay {
   position: fixed;
@@ -381,3 +394,4 @@ input {
   display: none !important;
   opacity: 0;
 }
+

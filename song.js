@@ -1,10 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- ADD THIS TO FORCE SCROLL TO TOP ON REFRESH ---
   window.scrollTo(0, 0); 
-  
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
+
   const songForm = document.getElementById("songForm");
   const occasionForm = document.getElementById("occasionForm");
   const nameInput = document.getElementById("personName");
@@ -13,8 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const scrollIndicator = document.querySelector(".scroll-down");
   const aboutSection = document.querySelector(".about-section");
   const scrollText = scrollIndicator?.querySelector("span");
-  const loadingOverlay = document.getElementById("loadingOverlay"); // Added this
-
+  const loadingOverlay = document.getElementById("loadingOverlay");
   const openOccasion = document.getElementById("openOccasion");
   const closeOccasion = document.getElementById("closeOccasion");
   const occasionOverlay = document.getElementById("occasionOverlay");
@@ -31,6 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------------- MODAL LOGIC ---------------- */
   if (openOccasion) {
     openOccasion.addEventListener("click", () => {
+      // Sync values from main form to modal before opening
+      document.getElementById("occ_your_name").value = nameInput.value;
+      document.getElementById("occ_song").value = songForm.querySelector('input[name="entry.1776646019"]').value;
+      document.getElementById("occ_artist").value = songForm.querySelector('input[name="entry.181281543"]').value;
+
       occasionOverlay.classList.remove("hidden");
       occasionOverlay.style.opacity = "0";
       requestAnimationFrame(() => {
@@ -41,10 +44,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (closeOccasion) {
+if (closeOccasion) {
     closeOccasion.addEventListener("click", () => {
-      document.querySelector(".overlay").scrollIntoView({ behavior: "smooth", block: "start" });
+      // 1. Scroll the main window back to the absolute top
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // 2. Fade out the modal
       occasionOverlay.style.opacity = "0";
+      
+      // 3. Hide it after the fade animation finishes
       setTimeout(() => {
         occasionOverlay.classList.add("hidden");
       }, 400);
@@ -53,10 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------------- SUCCESS UI ---------------- */
   function showSuccessUI(displayName) {
-    // 1. Hide the loader immediately
     if (loadingOverlay) loadingOverlay.classList.add("hidden");
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     if (scrollIndicator) scrollIndicator.style.display = "none";
     if (aboutSection) aboutSection.style.display = "none";
     
@@ -84,17 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const backBtn = document.getElementById("backBtn");
     if (backBtn) {
       backBtn.addEventListener("click", () => {
-        successSection.classList.remove("show");
-        setTimeout(() => {
-          successSection.style.display = "none";
-          formSection.style.display = "block";
-          if (scrollIndicator) scrollIndicator.style.display = "block";
-          if (aboutSection) aboutSection.style.display = "block";
-          
-          formSection.style.animation = 'none';
-          formSection.offsetHeight; 
-          formSection.style.animation = 'popIn 0.5s ease';
-        }, 300);
+        location.reload(); // Cleanest way to reset everything for a new request
       });
     }
 
@@ -104,61 +101,28 @@ document.addEventListener("DOMContentLoaded", () => {
     cachedName = "";
   }
 
-  /* ---------------- UNIFIED SUBMIT (OCCASION) ---------------- */
-  if (occasionForm) {
-    occasionForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      
-      // SHOW LOADER
-      if (loadingOverlay) loadingOverlay.classList.remove("hidden");
-
-      const formData = new FormData();
-
-      const sName = songForm.querySelector('input[name="entry.868369003"]')?.value || "";
-      const sSong = songForm.querySelector('input[name="entry.1776646019"]')?.value || "";
-      const sArtist = songForm.querySelector('input[name="entry.181281543"]')?.value || "";
-
-      const oPerson = occasionForm.querySelector('input[name="entry.389682099"]')?.value || "";
-      const oMsg = occasionForm.querySelector('input[name="entry.805932371"]')?.value || "";
-      const selectedRadio = occasionForm.querySelector('input[name="entry.1223390077"]:checked');
-      const oType = selectedRadio ? selectedRadio.value : "";
-
-      formData.append('entry.868369003', sName);
-      formData.append('entry.1776646019', sSong);
-      formData.append('entry.181281543', sArtist);
-      formData.append('entry.389682099', oPerson);
-      formData.append('entry.805932371', oMsg);
-      formData.append('entry.1223390077', oType);
-
-      try {
-        await fetch(songForm.action, { method: 'POST', mode: 'no-cors', body: formData });
-        showSuccessUI(sName || cachedName);
-      } catch (err) {
-        if (loadingOverlay) loadingOverlay.classList.add("hidden");
-        console.error("Submission failed", err);
-        alert("Oops! Something went wrong. Check your connection.");
+  /* ---------------- SUBMISSION LOGIC ---------------- */
+  
+  // Listen for the iframe to load (this means Google received the data)
+  const iframe = document.getElementsByName("hidden_iframe")[0];
+  if (iframe) {
+    iframe.onload = () => {
+      // Only trigger success if the loader is actually visible (prevents false triggers)
+      if (!loadingOverlay.classList.contains("hidden")) {
+        const nameToUse = document.getElementById("occ_your_name").value || nameInput.value || cachedName;
+        showSuccessUI(nameToUse);
       }
-    });
+    };
   }
 
-  /* ---------------- SIMPLE SUBMIT (SONG ONLY) ---------------- */
-  songForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    
-    // SHOW LOADER
-    if (loadingOverlay) loadingOverlay.classList.remove("hidden");
+  // Handle Main Form Submit
+  songForm.addEventListener("submit", () => {
+    loadingOverlay.classList.remove("hidden");
+  });
 
-    const formData = new FormData(songForm);
-    const currentName = songForm.querySelector('input[name="entry.868369003"]')?.value || "";
-
-    try {
-      await fetch(songForm.action, { method: 'POST', mode: 'no-cors', body: formData });
-      showSuccessUI(currentName);
-    } catch (err) {
-      if (loadingOverlay) loadingOverlay.classList.add("hidden");
-      console.error("Submission failed", err);
-      alert("Oops! Something went wrong.");
-    }
+  // Handle Occasion Form Submit
+  occasionForm.addEventListener("submit", () => {
+    loadingOverlay.classList.remove("hidden");
   });
 
   /* ---------------- CONFETTI & SCROLL ---------------- */
@@ -178,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!scrollIndicator || !aboutSection || !scrollText) return;
     const aboutTop = aboutSection.getBoundingClientRect().top;
     if (aboutTop <= window.innerHeight / 1.5) {
-      scrollText.textContent = "Click the celebrating an occasion? button, at the top, to input your occasion";
+      scrollText.textContent = "Click the 'Celebrating an occasion?' button at the top to input your shout-out!";
     } else {
       scrollText.textContent = "Scroll down to learn more";
     }
